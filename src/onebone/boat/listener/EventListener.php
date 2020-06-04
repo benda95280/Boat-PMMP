@@ -6,6 +6,7 @@ use onebone\boat\entity\Boat as BoatEntity;
 use pocketmine\entity\Entity;
 use pocketmine\event\Listener;
 use pocketmine\event\player\PlayerQuitEvent;
+use pocketmine\event\player\PlayerInteractEvent;
 use pocketmine\event\server\DataPacketReceiveEvent;
 use pocketmine\network\mcpe\protocol\{
 	InteractPacket, InventoryTransactionPacket, MoveEntityAbsolutePacket, PlayerInputPacket, SetEntityMotionPacket, AnimatePacket
@@ -23,6 +24,12 @@ class EventListener implements Listener{
 					return;
 				}
 			}
+		}
+	}
+
+  public function onInteract(PlayerInteractEvent $event) {
+    if ($event->getItem()->getId() == 333) {
+			// destroying the boat works but maybe something here later to make it better?
 		}
 	}
 
