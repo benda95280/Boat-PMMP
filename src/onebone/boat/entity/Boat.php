@@ -14,9 +14,10 @@ use pocketmine\event\entity\{
 };
 use pocketmine\item\Item;
 use pocketmine\network\mcpe\protocol\{
-	EntityEventPacket, SetEntityLinkPacket, AnimatePacket, AddEntityPacket
+  ActorEventPacket, SetActorLinkPacket, AnimatePacket
 };
 use pocketmine\network\mcpe\protocol\types\EntityLink;
+use pocketmine\network\mcpe\protocol\AddActorPacket as AddEntityPacket;
 
 class Boat extends Vehicle{
 	public const NETWORK_ID = self::BOAT;
@@ -63,9 +64,9 @@ class Boat extends Vehicle{
 		parent::attack($source);
 
 		if(!$source->isCancelled()){
-			$pk = new EntityEventPacket();
+			$pk = new ActorEventPacket();
 			$pk->entityRuntimeId = $this->id;
-			$pk->event = EntityEventPacket::HURT_ANIMATION;
+			$pk->event = ActorEventPacket::HURT_ANIMATION;
 			Server::getInstance()->broadcastPacket($this->getViewers(), $pk);
 		}
 	}
@@ -174,7 +175,7 @@ class Boat extends Vehicle{
 			$rider->getDataPropertyManager()->setFloat(self::DATA_RIDER_MIN_ROTATION, -90);
 
 			//Link entity to boat
-			$pk = new SetEntityLinkPacket();
+			$pk = new SetActorLinkPacket();
 			$pk->link = new EntityLink($this->getId(), $rider->getId(), EntityLink::TYPE_RIDER);
 			Server::getInstance()->broadcastPacket($this->getViewers(), $pk);
 
@@ -200,7 +201,7 @@ class Boat extends Vehicle{
 			$rider->getDataPropertyManager()->setByte(self::DATA_RIDER_ROTATION_LOCKED, false);
 
 			//Unlink entity from boat
-			$pk = new SetEntityLinkPacket();
+			$pk = new SetActorLinkPacket();
 			$pk->link = new EntityLink($this->getId(), $rider->getId(), EntityLink::TYPE_REMOVE);
 			Server::getInstance()->broadcastPacket($this->getViewers(), $pk);
 
