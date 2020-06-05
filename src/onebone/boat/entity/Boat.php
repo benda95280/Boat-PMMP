@@ -14,10 +14,9 @@ use pocketmine\event\entity\{
 };
 use pocketmine\item\Item;
 use pocketmine\network\mcpe\protocol\{
-  ActorEventPacket, SetActorLinkPacket, AnimatePacket
+  ActorEventPacket, SetActorLinkPacket, AnimatePacket, AddActorPacket
 };
 use pocketmine\network\mcpe\protocol\types\EntityLink;
-use pocketmine\network\mcpe\protocol\AddActorPacket as AddEntityPacket;
 
 class Boat extends Vehicle{
 	public const NETWORK_ID = self::BOAT;
@@ -78,9 +77,9 @@ class Boat extends Vehicle{
 	 * @override
 	 */
 	protected function sendSpawnPacket(Player $player) : void{
-		$pk = new AddEntityPacket();
+		$pk = new AddActorPacket();
 		$pk->entityRuntimeId = $this->getId();
-		$pk->type = static::NETWORK_ID;
+		$pk->type = AddActorPacket::LEGACY_ID_MAP_BC[static::NETWORK_ID];
 		$pk->position = $this->asVector3();
 		$pk->motion = $this->getMotion();
 		$pk->yaw = $this->yaw;
